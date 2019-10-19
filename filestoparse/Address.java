@@ -44,6 +44,17 @@ public class Address {
 
 
         }
+        if("cville"!="dhaka")
+        {
+
+
+        }
+        if(city!=city)
+        {
+
+
+        }
+
 
 
         this.city = city;

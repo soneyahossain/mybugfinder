@@ -26,14 +26,10 @@ import java.util.List;
 
 public class mytool {
 
-
-
     public  static HashMap<String, String> identifiers = new HashMap<String, String>();
-
 
     public static void main(String args[])
     {
-        System.out.println("=========");
 
         try {
 
@@ -88,17 +84,17 @@ public class mytool {
 
                                 // if (binop.getCondition() instanceof BinaryOperator) {
 
-                                System.out.println(exp);
+                                //System.out.println(exp);
 
                                 if (exp instanceof BinaryExpr) {
 
-                                    System.out.println();
+                                   // System.out.println();
 
-                                    System.out.println( ((BinaryExpr) exp).getLeft());
+                                   // System.out.println( ((BinaryExpr) exp).getLeft());
 
-                                    System.out.println( ((BinaryExpr) exp).getRight());
+                                   // System.out.println( ((BinaryExpr) exp).getRight());
 
-                                    System.out.println( ((BinaryExpr) exp).getOperator());
+                                    // System.out.println( ((BinaryExpr) exp).getOperator());
 
 
                                    if (((BinaryExpr) exp).getLeft().isStringLiteralExpr() ||( (BinaryExpr) exp).getRight().isStringLiteralExpr())
@@ -116,9 +112,6 @@ public class mytool {
 
                                             }
                                         }
-
-
-
                                    }else if(((BinaryExpr) exp).getRight().isNameExpr())
                                    {
 
@@ -127,55 +120,27 @@ public class mytool {
                                            if(identifiers.get(((BinaryExpr) exp).getRight()).equals("java.lang.String"))
                                            {
                                                System.out.println("Error found in statement :"+exp);
-
-
                                            }
-
-
-
                                        }
                                    }
-
-
-
-
-
                                 }
                                 if(exp instanceof MethodCallExpr){
-
-                                    System.out.println("yo2");
-
-                                    System.out.println( ((MethodCallExpr) exp).getName());
-
-                                    System.out.println( ((MethodCallExpr) exp).getArgument(0));
-
-                                    // System.out.println( ((BinaryExpr) exp).getOperator());
+                                       // System.out.println("yo2");
+                                       // System.out.println( ((MethodCallExpr) exp).getName());
+                                       // System.out.println( ((MethodCallExpr) exp).getArgument(0));
 
 
                                 }
-
-
-                                // }
                             }
-
-
-
                     } else if (member instanceof FieldDeclaration) {
                         FieldDeclaration field = (FieldDeclaration) member;
-
                     }
                 }
-
-
-
         }catch(Exception e)
         {
-System.out.println(e.toString());
-
+            System.out.println(e.toString());
 
         }
-
-
     }
 
 
