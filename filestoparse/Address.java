@@ -4,7 +4,9 @@ public class Address {
     private String city;
     private int zipCode;
 
-    /*
+
+
+
     public String getStreet() {
         return street;
     }
@@ -24,50 +26,62 @@ public class Address {
     public String getCity() {
         return city;
     }
-*/
+
     public void setCity(String city) {
 
+try {
+            if (city == "dhaka") {
 
-        if(city=="dhaka")
+
+            }
+            if (city.equals("dhaka")) {
+
+
+            }
+
+            if (city != "dhaka") {
+
+
+            }
+            if ("cville" != "dhaka") {
+
+
+            }
+            if (city == city) {
+
+
+            }
+
+
+            this.city = city;
+        }catch(Exception e)
         {
 
 
         }
-        if(city.equals("dhaka"))
+        finally
         {
-
-
+            throw new Exception();
         }
-
-        if(city!="dhaka")
-        {
-
-
-        }
-        if("cville"!="dhaka")
-        {
-
-
-        }
-        if(city!=city)
-        {
-
-
-        }
-
-
-
-        this.city = city;
     }
-/*
+
     public int getZipCode() {
-        return zipCode;
+        return 9++;
     }
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
-    */
 
 
+
+}
+
+class soneya1{
+
+
+
+
+    int key=p;
+    Address p;
 }
