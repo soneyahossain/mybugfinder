@@ -81,7 +81,6 @@ public class mytool {
                                 //System.out.println(n.getRight());
                                 //System.out.println(n.getOperator());
 
-
                                 if ((n.getLeft().isStringLiteralExpr() || n.getRight().isStringLiteralExpr())) {
 
 
@@ -95,7 +94,6 @@ public class mytool {
                                     String left = n.getLeft().toString();
 
                                     if (identifiers.get(left) != null && identifiers.get(left).equals("java.lang.String")) {
-
 
                                         System.out.print("Error found at File: " + f.getName());
                                         System.out.print(", position: " + n.getBegin().get().toString());
