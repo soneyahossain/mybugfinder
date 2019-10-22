@@ -61,10 +61,14 @@ public class mytool {
 
                         for (int i = 0; i < lists.size(); i++) {
 
-                            identifiers.put(lists.get(i).getName(), typeDeclaration.getField(lists.get(i).getName()).getType().describe());
+                            String type_ = typeDeclaration.getField(lists.get(i).getName()).getType().describe();
+
+                            if (type_.contains("String"))
+                                type_ = "String";
+                            identifiers.put(lists.get(i).getName(), type_);
                         }
                     }
-                   //System.out.println(identifiers.toString());
+                    //System.out.println(identifiers.toString());
                 }
 
 
@@ -75,10 +79,10 @@ public class mytool {
                         public void visit(final VariableDeclarator n, final Object arg) {
 
                             n.getInitializer().ifPresent((l) -> {
-                                if(l.toString().contains("new "))
-                                    identifiers.put(n.getNameAsString(),n.getType().toString()+"Object");
+                                if (l.toString().contains("new "))
+                                    identifiers.put(n.getNameAsString(), n.getType().toString() + "Object");
                                 else
-                                    identifiers.put(n.getNameAsString(),n.getType().toString());
+                                    identifiers.put(n.getNameAsString(), n.getType().toString());
                                 l.accept(this, arg);
                             });
                             n.getName().accept(this, arg);
@@ -93,22 +97,21 @@ public class mytool {
 
                             if (n.getOperator().toString().equals("NOT_EQUALS") || n.getOperator().toString().equals("EQUALS")) {
 
-                                    String left = n.getLeft().toString();
-                                    String right = n.getRight().toString();
+                                String left = n.getLeft().toString();
+                                String right = n.getRight().toString();
 
-                                    if (identifiers.get(left) != null && identifiers.get(left).equals("StringObject")) {
+                                if (identifiers.get(left) != null && identifiers.get(left).equals("StringObject")) {
 
-                                        System.out.print("Error found at File: " + f.getName());
-                                        System.out.print(", position: " + n.getBegin().get().toString());
-                                        System.out.print(", statement: " + n.toString());
-                                        System.out.println(", desc: " + "Illegal String Comparison");
-                                    }
-                                    else if (identifiers.get(right) != null && identifiers.get(right).equals("StringObject")) {
-                                        System.out.print("Error found at File: " + f.getName());
-                                        System.out.print(", position: " + n.getBegin().get().toString());
-                                        System.out.print(", statement: " + n.toString());
-                                        System.out.println(", desc: " + "Illegal String Comparison");
-                                    }
+                                    System.out.print("Error found at File: " + f.getName());
+                                    System.out.print(", position: " + n.getBegin().get().toString());
+                                    System.out.print(", statement: " + n.toString());
+                                    System.out.println(", desc: " + "Illegal String Comparison");
+                                } else if (identifiers.get(right) != null && identifiers.get(right).equals("StringObject")) {
+                                    System.out.print("Error found at File: " + f.getName());
+                                    System.out.print(", position: " + n.getBegin().get().toString());
+                                    System.out.print(", statement: " + n.toString());
+                                    System.out.println(", desc: " + "Illegal String Comparison");
+                                }
                             }
 
                             n.getLeft().accept(this, arg);
@@ -158,7 +161,7 @@ public class mytool {
                                 ReturnStmt rs = n;
                                 Expression ex = rs.getExpression().get();
 
-                                if ( ex instanceof UnaryExpr && (((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_DECREMENT") ||((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_INCREMENT"))){
+                                if (ex instanceof UnaryExpr && (((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_DECREMENT") || ((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_INCREMENT"))) {
 
                                     System.out.print("Error found at File: " + f.getName());
                                     System.out.print(", position: " + rs.getBegin().get().toString());
@@ -181,7 +184,7 @@ public class mytool {
             e.printStackTrace();
         }
 
-       System.out.println(identifiers.toString());
+        System.out.println(identifiers.toString());
 
     }
 }
