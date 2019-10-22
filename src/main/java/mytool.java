@@ -57,58 +57,28 @@ public class mytool {
                         ClassOrInterfaceDeclaration classC = cu.getClassByName(type.getName().asString()).get();
                         ResolvedReferenceTypeDeclaration typeDeclaration = JavaParserFacade.get(new ReflectionTypeSolver()).getTypeDeclaration(classC);
 
-
                         List<ResolvedFieldDeclaration> lists = typeDeclaration.getAllFields();
 
-
-
-
                         for (int i = 0; i < lists.size(); i++) {
-
-
-
-                             //System.out.println("field name: " + lists.get(i).getName());
-                             //System.out.println("field name: " + lists.get(i).toString());
 
                             identifiers.put(lists.get(i).getName(), typeDeclaration.getField(lists.get(i).getName()).getType().describe());
                         }
                     }
-                   // System.out.println(identifiers.toString());
+                   //System.out.println(identifiers.toString());
                 }
 
 
                 try {
                     new VoidVisitorAdapter<Object>() {
 
-
-
                         @Override
                         public void visit(final VariableDeclarator n, final Object arg) {
 
-
-
-
-                            //System.out.println("here====================" + n.toString());
-                            //System.out.println("here====================" + n.getNameAsString());
-                            //System.out.println("here====================" + n.getType());
-                            //System.out.println("here====================" + n.getType());
-
-
                             n.getInitializer().ifPresent((l) -> {
-
-                               // System.out.println("here====================" + l);
-
                                 if(l.toString().contains("new "))
-
-
-                                      identifiers.put(n.getNameAsString(),n.getType().toString()+"Object");
+                                    identifiers.put(n.getNameAsString(),n.getType().toString()+"Object");
                                 else
                                     identifiers.put(n.getNameAsString(),n.getType().toString());
-
-
-
-
-
                                 l.accept(this, arg);
                             });
                             n.getName().accept(this, arg);
@@ -118,55 +88,13 @@ public class mytool {
                             });
                         }
 
-                        /*
-                        @Override
-                        public void visit(final VariableDeclarationExpr n, final Object arg) {
-
-
-
-                            System.out.println("field name====================" + n.toString());
-
-
-                            n.getAnnotations().forEach((p) -> {
-                                p.accept(this, arg);
-                            });
-                            n.getModifiers().forEach((p) -> {
-                                p.accept(this, arg);
-                            });
-                            n.getVariables().forEach((p) -> {
-
-                                //System.out.println("field name====================" + p.toString());
-
-
-
-
-                               // System.out.println("field name: " + p.getName());
-                               // System.out.println("field type: " + p.getType());
-                                identifiers.put(p.getName().toString(),p.getType().toString());
-
-
-
-
-                                p.accept(this, arg);
-                            });
-                            n.getComment().ifPresent((l) -> {
-                                l.accept(this, arg);
-                            });
-                        }
-*/
                         @Override
                         public void visit(final BinaryExpr n, final Object arg) {
 
-
-
-
-
                             if (n.getOperator().toString().equals("NOT_EQUALS") || n.getOperator().toString().equals("EQUALS")) {
 
-
-                                if (n.getLeft().isNameExpr()) {
-
                                     String left = n.getLeft().toString();
+                                    String right = n.getRight().toString();
 
                                     if (identifiers.get(left) != null && identifiers.get(left).equals("StringObject")) {
 
@@ -175,72 +103,14 @@ public class mytool {
                                         System.out.print(", statement: " + n.toString());
                                         System.out.println(", desc: " + "Illegal String Comparison");
                                     }
-
-                                }else if (n.getRight().isNameExpr()) {
-
-                                    String right = n.getLeft().toString();
-                                    if (identifiers.get(right) != null && identifiers.get(right).equals("java.lang.String")) {
+                                    else if (identifiers.get(right) != null && identifiers.get(right).equals("StringObject")) {
                                         System.out.print("Error found at File: " + f.getName());
                                         System.out.print(", position: " + n.getBegin().get().toString());
                                         System.out.print(", statement: " + n.toString());
                                         System.out.println(", desc: " + "Illegal String Comparison");
                                     }
-                                }
-
-
-
-
-
-
-
-
                             }
 
-
-
-                            /*
-
-
-                            if (n.getOperator().toString().equals("NOT_EQUALS") || n.getOperator().toString().equals("EQUALS")) {
-
-                                //System.out.println(n.toString());
-                                //System.out.println(n.getLeft());
-                                //System.out.println(n.getRight());
-                                //System.out.println(n.getOperator());
-
-                                if ((n.getLeft().isStringLiteralExpr() || n.getRight().isStringLiteralExpr())) {
-
-
-                                    System.out.print("Error found at File: " + f.getName());
-                                    System.out.print(", position: " + n.getBegin().get().toString());
-                                    System.out.print(", statement: " + n.toString());
-                                    System.out.println(", desc: " + "Illegal String Comparison");
-
-                                } else if (n.getLeft().isNameExpr()) {
-
-                                    String left = n.getLeft().toString();
-
-                                    if (identifiers.get(left) != null && identifiers.get(left).equals("java.lang.String")) {
-
-                                        System.out.print("Error found at File: " + f.getName());
-                                        System.out.print(", position: " + n.getBegin().get().toString());
-                                        System.out.print(", statement: " + n.toString());
-                                        System.out.println(", desc: " + "Illegal String Comparison");
-                                    }
-
-                                } else if (n.getRight().isNameExpr()) {
-
-                                    String right = n.getLeft().toString();
-                                    if (identifiers.get(right) != null && identifiers.get(right).equals("java.lang.String")) {
-                                        System.out.print("Error found at File: " + f.getName());
-                                        System.out.print(", position: " + n.getBegin().get().toString());
-                                        System.out.print(", statement: " + n.toString());
-                                        System.out.println(", desc: " + "Illegal String Comparison");
-                                    }
-                                }
-
-                            }
-*/
                             n.getLeft().accept(this, arg);
                             n.getRight().accept(this, arg);
                             n.getComment().ifPresent((l) -> {
@@ -311,9 +181,7 @@ public class mytool {
             e.printStackTrace();
         }
 
-
-
-       // System.out.println(identifiers.toString());
+       System.out.println(identifiers.toString());
 
     }
 }
