@@ -35,10 +35,6 @@ public class testpattern2_1 {
         } finally {
             throw new Exception();  //Should Throw an Error
         }
-
         return;
     }
-
-    }
-
 }

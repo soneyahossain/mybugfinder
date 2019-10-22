@@ -5,9 +5,9 @@ public class testpattern2_2 {
 
     public static void main(String args[]) {
         try{
-            int array = {1,2,3};
-
-            array[5];
+            int A[];
+            A = new int[3];
+            int B = A[5];
         } catch( Exception e) {
             System.out.println("Indexing Error");
         } finally {
@@ -22,23 +22,23 @@ public class testpattern2_2 {
             System.out.println("We are finished handling the Error.");
         }
 
-        FinallyTest();
+        FinallyTests();
     }
 
     public static void FinallyTests()
     {
         try{
-            int array = {1,2,3};
-            array[5];
+            int A[];
+            A = new int[3];
+            int B = A[5];
         } catch( Exception e) {
             System.out.println("Indexing Error");
         } finally {
-            System.out.println("We are finished handling the Error.")
-        } throw new Exception; //Not handled, but should not throw error for us
+            System.out.println("We are finished handling the Error.");
+        }
 
-        throw new Exception; //Not handled, but should not throw error for us
+        //throw new Exception(); //Not handled, but should not throw error for us
+        //throw new Exception(); //Not handled, but should not throw error for us
     }
-
-}
 
 }

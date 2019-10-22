@@ -4,6 +4,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.UnaryExpr;
@@ -33,7 +34,7 @@ public class mytool {
         try {
 
 
-            File directory = new File("filestoparse/");
+            File directory = new File("filestoparse/test");
             File files[] = directory.listFiles();
 
             for (File f : files) {
@@ -59,19 +60,145 @@ public class mytool {
 
                         List<ResolvedFieldDeclaration> lists = typeDeclaration.getAllFields();
 
+
+
+
                         for (int i = 0; i < lists.size(); i++) {
-                            //System.out.println("field name: " + lists.get(i).getName());
+
+
+
+                             //System.out.println("field name: " + lists.get(i).getName());
+                             //System.out.println("field name: " + lists.get(i).toString());
+
                             identifiers.put(lists.get(i).getName(), typeDeclaration.getField(lists.get(i).getName()).getType().describe());
                         }
                     }
-                    //System.out.println(identifiers.toString());
+                   // System.out.println(identifiers.toString());
                 }
 
 
                 try {
                     new VoidVisitorAdapter<Object>() {
+
+
+
+                        @Override
+                        public void visit(final VariableDeclarator n, final Object arg) {
+
+
+
+
+                            //System.out.println("here====================" + n.toString());
+                            //System.out.println("here====================" + n.getNameAsString());
+                            //System.out.println("here====================" + n.getType());
+                            //System.out.println("here====================" + n.getType());
+
+
+                            n.getInitializer().ifPresent((l) -> {
+
+                               // System.out.println("here====================" + l);
+
+                                if(l.toString().contains("new "))
+
+
+                                      identifiers.put(n.getNameAsString(),n.getType().toString()+"Object");
+                                else
+                                    identifiers.put(n.getNameAsString(),n.getType().toString());
+
+
+
+
+
+                                l.accept(this, arg);
+                            });
+                            n.getName().accept(this, arg);
+                            n.getType().accept(this, arg);
+                            n.getComment().ifPresent((l) -> {
+                                l.accept(this, arg);
+                            });
+                        }
+
+                        /*
+                        @Override
+                        public void visit(final VariableDeclarationExpr n, final Object arg) {
+
+
+
+                            System.out.println("field name====================" + n.toString());
+
+
+                            n.getAnnotations().forEach((p) -> {
+                                p.accept(this, arg);
+                            });
+                            n.getModifiers().forEach((p) -> {
+                                p.accept(this, arg);
+                            });
+                            n.getVariables().forEach((p) -> {
+
+                                //System.out.println("field name====================" + p.toString());
+
+
+
+
+                               // System.out.println("field name: " + p.getName());
+                               // System.out.println("field type: " + p.getType());
+                                identifiers.put(p.getName().toString(),p.getType().toString());
+
+
+
+
+                                p.accept(this, arg);
+                            });
+                            n.getComment().ifPresent((l) -> {
+                                l.accept(this, arg);
+                            });
+                        }
+*/
                         @Override
                         public void visit(final BinaryExpr n, final Object arg) {
+
+
+
+
+
+                            if (n.getOperator().toString().equals("NOT_EQUALS") || n.getOperator().toString().equals("EQUALS")) {
+
+
+                                if (n.getLeft().isNameExpr()) {
+
+                                    String left = n.getLeft().toString();
+
+                                    if (identifiers.get(left) != null && identifiers.get(left).equals("StringObject")) {
+
+                                        System.out.print("Error found at File: " + f.getName());
+                                        System.out.print(", position: " + n.getBegin().get().toString());
+                                        System.out.print(", statement: " + n.toString());
+                                        System.out.println(", desc: " + "Illegal String Comparison");
+                                    }
+
+                                }else if (n.getRight().isNameExpr()) {
+
+                                    String right = n.getLeft().toString();
+                                    if (identifiers.get(right) != null && identifiers.get(right).equals("java.lang.String")) {
+                                        System.out.print("Error found at File: " + f.getName());
+                                        System.out.print(", position: " + n.getBegin().get().toString());
+                                        System.out.print(", statement: " + n.toString());
+                                        System.out.println(", desc: " + "Illegal String Comparison");
+                                    }
+                                }
+
+
+
+
+
+
+
+
+                            }
+
+
+
+                            /*
 
 
                             if (n.getOperator().toString().equals("NOT_EQUALS") || n.getOperator().toString().equals("EQUALS")) {
@@ -113,7 +240,7 @@ public class mytool {
                                 }
 
                             }
-
+*/
                             n.getLeft().accept(this, arg);
                             n.getRight().accept(this, arg);
                             n.getComment().ifPresent((l) -> {
@@ -161,7 +288,7 @@ public class mytool {
                                 ReturnStmt rs = n;
                                 Expression ex = rs.getExpression().get();
 
-                                if (ex instanceof UnaryExpr && ((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_INCREMENT")) {
+                                if ( ex instanceof UnaryExpr && (((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_DECREMENT") ||((UnaryExpr) ex).getOperator().toString().equals("POSTFIX_INCREMENT"))){
 
                                     System.out.print("Error found at File: " + f.getName());
                                     System.out.print(", position: " + rs.getBegin().get().toString());
@@ -183,5 +310,10 @@ public class mytool {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+       // System.out.println(identifiers.toString());
+
     }
 }
