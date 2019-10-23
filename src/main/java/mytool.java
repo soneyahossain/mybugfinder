@@ -21,8 +21,10 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 public class mytool {
@@ -31,15 +33,49 @@ public class mytool {
 
     public static void main(String args[]) {
 
+        final File folder = new File("filestoparse/src");
+
+        List<String> result = new ArrayList<>();
+
+        search(".*\\.java", folder, result);
+
+        for (String s : result) {
+            //System.out.println(s);
+        }
+
+        findPatterns(result);
+        System.out.println(identifiers.toString());
+
+    }
+
+
+    public static void search(final String pattern, final File folder, List<String> result) {
+        for (final File f : folder.listFiles()) {
+
+            if (f.isDirectory()) {
+                search(pattern, f, result);
+            }
+
+            if (f.isFile()) {
+                if (f.getName().matches(pattern)) {
+                    result.add(f.getAbsolutePath());
+                }
+            }
+
+        }
+    }
+
+
+    public static void findPatterns(List<String> result) {
+
+
         try {
 
+            for (String s : result) {
 
-            File directory = new File("filestoparse/test");
-            File files[] = directory.listFiles();
+                File f = new File(s);
 
-            for (File f : files) {
-
-                //System.out.println("File Name =" + f.getName());
+                System.out.println("File Name =" + f.getName());
                 ParseResult<CompilationUnit> agendaCu = new JavaParser().parse(new FileInputStream(f));
                 CompilationUnit cu = agendaCu.getResult().get();
 
@@ -53,22 +89,38 @@ public class mytool {
 
                     if (type instanceof ClassOrInterfaceDeclaration) {
 
-                        //System.out.println("class name = " + type.getName());
-                        ClassOrInterfaceDeclaration classC = cu.getClassByName(type.getName().asString()).get();
-                        ResolvedReferenceTypeDeclaration typeDeclaration = JavaParserFacade.get(new ReflectionTypeSolver()).getTypeDeclaration(classC);
+                       // System.out.println("class name = " + type.getName());
+                        ClassOrInterfaceDeclaration classOrInterface = null;
+
+
+                        try {
+                            classOrInterface = cu.getClassByName(type.getName().asString()).get();
+                            System.out.println("class name = " + type.getName());
+
+                        } catch (NoSuchElementException e) {
+                            classOrInterface = cu.getInterfaceByName(type.getName().asString()).get();
+                            System.out.println("class name = " + type.getName());
+                        }
+
+                        try {
+
+                        ResolvedReferenceTypeDeclaration typeDeclaration = JavaParserFacade.get(new ReflectionTypeSolver()).getTypeDeclaration(classOrInterface);
 
                         List<ResolvedFieldDeclaration> lists = typeDeclaration.getAllFields();
 
                         for (int i = 0; i < lists.size(); i++) {
 
-                            String type_ = typeDeclaration.getField(lists.get(i).getName()).getType().describe();
-
-                            if (type_.contains("String"))
-                                type_ = "String";
-                            identifiers.put(lists.get(i).getName(), type_);
+                                String type_ = typeDeclaration.getField(lists.get(i).getName()).getType().describe();
+                                if (type_.contains("String"))
+                                    type_ = "String";
+                                identifiers.put(lists.get(i).getName(), type_);
                         }
+                        } catch (Exception e) {
+                        }
+
+
                     }
-                    //System.out.println(identifiers.toString());
+
                 }
 
 
@@ -183,8 +235,7 @@ public class mytool {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println(identifiers.toString());
-
     }
+
 }
+
