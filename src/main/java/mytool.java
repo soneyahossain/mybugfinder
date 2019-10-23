@@ -8,10 +8,7 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.UnaryExpr;
-import com.github.javaparser.ast.stmt.ReturnStmt;
-import com.github.javaparser.ast.stmt.Statement;
-import com.github.javaparser.ast.stmt.ThrowStmt;
-import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.stmt.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.YamlPrinter;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
@@ -39,12 +36,8 @@ public class mytool {
 
         search(".*\\.java", folder, result);
 
-        for (String s : result) {
-            //System.out.println(s);
-        }
-
         findPatterns(result);
-        System.out.println(identifiers.toString());
+        //System.out.println(identifiers.toString());
 
     }
 
@@ -68,14 +61,13 @@ public class mytool {
 
     public static void findPatterns(List<String> result) {
 
-
         try {
 
             for (String s : result) {
 
                 File f = new File(s);
 
-                System.out.println("File Name =" + f.getName());
+                //System.out.println("File Name =" + f.getName());
                 ParseResult<CompilationUnit> agendaCu = new JavaParser().parse(new FileInputStream(f));
                 CompilationUnit cu = agendaCu.getResult().get();
 
@@ -89,36 +81,34 @@ public class mytool {
 
                     if (type instanceof ClassOrInterfaceDeclaration) {
 
-                       // System.out.println("class name = " + type.getName());
+                        // System.out.println("class name = " + type.getName());
                         ClassOrInterfaceDeclaration classOrInterface = null;
 
 
                         try {
                             classOrInterface = cu.getClassByName(type.getName().asString()).get();
-                            System.out.println("class name = " + type.getName());
+                            //System.out.println("class name = " + type.getName());
 
                         } catch (NoSuchElementException e) {
                             classOrInterface = cu.getInterfaceByName(type.getName().asString()).get();
-                            System.out.println("class name = " + type.getName());
+                            //System.out.println("class name = " + type.getName());
                         }
 
                         try {
 
-                        ResolvedReferenceTypeDeclaration typeDeclaration = JavaParserFacade.get(new ReflectionTypeSolver()).getTypeDeclaration(classOrInterface);
+                            ResolvedReferenceTypeDeclaration typeDeclaration = JavaParserFacade.get(new ReflectionTypeSolver()).getTypeDeclaration(classOrInterface);
 
-                        List<ResolvedFieldDeclaration> lists = typeDeclaration.getAllFields();
+                            List<ResolvedFieldDeclaration> lists = typeDeclaration.getAllFields();
 
-                        for (int i = 0; i < lists.size(); i++) {
+                            for (int i = 0; i < lists.size(); i++) {
 
                                 String type_ = typeDeclaration.getField(lists.get(i).getName()).getType().describe();
                                 if (type_.contains("String"))
                                     type_ = "String";
                                 identifiers.put(lists.get(i).getName(), type_);
-                        }
+                            }
                         } catch (Exception e) {
                         }
-
-
                     }
 
                 }
@@ -172,6 +162,31 @@ public class mytool {
                                 l.accept(this, arg);
                             });
                         }
+
+
+                        @Override
+                        public void visit(final CatchClause n, final Object arg) {
+
+                            //System.out.println(n.getBody().getStatements().toString());
+
+                            String statements= n.getBody().getStatements().toString();
+
+                            if(statements.length()==2)
+                            {
+                                System.out.print("Error found at File: " + f.getPath());
+                                System.out.print(", position: " + n.getBegin().get().toString());
+                                //System.out.print(", statement: " + n.toString());
+                                System.out.println(", desc: " + "Avoid empty catch block");
+                            }
+
+
+                            n.getBody().accept(this, arg);
+                            n.getParameter().accept(this, arg);
+                            n.getComment().ifPresent((l) -> {
+                                l.accept(this, arg);
+                            });
+                        }
+
 
                         @Override
                         public void visit(final TryStmt n, final Object arg) {
