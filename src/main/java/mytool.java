@@ -30,15 +30,12 @@ public class mytool {
 
     public static void main(String args[]) {
 
-        final File folder = new File("joda-time");
+        final File folder = new File("src");
 
         List<String> result = new ArrayList<>();
-
         search(".*\\.java", folder, result);
-
         findPatterns(result);
         //System.out.println(identifiers.toString());
-
     }
 
 
@@ -110,9 +107,7 @@ public class mytool {
                         } catch (Exception e) {
                         }
                     }
-
                 }
-
 
                 try {
                     new VoidVisitorAdapter<Object>() {
@@ -146,12 +141,12 @@ public class mytool {
 
                                     System.out.print("Error found at File: " + f.getName());
                                     System.out.print(", position: " + n.getBegin().get().toString());
-                                    System.out.print(", statement: " + n.toString());
+                                    //System.out.print(", statement: " + n.toString());
                                     System.out.println(", desc: " + "Illegal String Comparison");
                                 } else if (identifiers.get(right) != null && identifiers.get(right).equals("StringObject")) {
                                     System.out.print("Error found at File: " + f.getName());
                                     System.out.print(", position: " + n.getBegin().get().toString());
-                                    System.out.print(", statement: " + n.toString());
+                                    //System.out.print(", statement: " + n.toString());
                                     System.out.println(", desc: " + "Illegal String Comparison");
                                 }
                             }
@@ -162,7 +157,6 @@ public class mytool {
                                 l.accept(this, arg);
                             });
                         }
-
 
                         @Override
                         public void visit(final CatchClause n, final Object arg) {
@@ -195,21 +189,17 @@ public class mytool {
                             });
                             n.getFinallyBlock().ifPresent((l) -> {
 
-
                                 NodeList<Statement> fbstmts = n.getFinallyBlock().get().getStatements();
-
                                 fbstmts.forEach(statement -> {
 
                                             if (statement instanceof ThrowStmt) {
                                                 System.out.print("Error found at File: " + f.getName());
                                                 System.out.print(", position: " + statement.getBegin().get().toString());
-                                                System.out.print(", statement: " + statement.toString());
+                                                //System.out.print(", statement: " + statement.toString());
                                                 System.out.println(", desc: " + "Finally block contains a throw statement");
                                             }
                                         }
                                 );
-
-
                                 l.accept(this, arg);
                             });
                             n.getResources().forEach((p) -> {
@@ -232,7 +222,7 @@ public class mytool {
 
                                     System.out.print("Error found at File: " + f.getName());
                                     System.out.print(", position: " + rs.getBegin().get().toString());
-                                    System.out.print(", statement: " + rs.toString());
+                                    //System.out.print(", statement: " + rs.toString());
                                     System.out.println(", Desc: This statement has a return such as return x++;. A postfix increment/decrement does not impact the value of the expression, so this increment/decrement has no effect. Please verify that this statement does the right thing\n");
                                 }
                                 l.accept(this, arg);
