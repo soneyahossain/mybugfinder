@@ -33,7 +33,7 @@ public class mytool {
 
     public static void main(String args[]) {
 
-        final File folder = new File("filestoparse/src");
+        final File folder = new File("joda-time");
 
         List<String> result = new ArrayList<>();
 
