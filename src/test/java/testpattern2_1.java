@@ -2,26 +2,46 @@ public class testpattern2_1 {
 
     public static void main(String args[]) {
 
-        FinallyTest();
+        CatchTest();
 
+        try{
+            int A[] = new int[3];
+            int B = A[5];
+        } catch( Exception e) {
+                                    //Should Throw an Error
+        } finally {
+            System.out.println("We are in the finally.");
+        }
 
+        try{
+            throw new Exception();
+        } catch(Exception e) {
+                                    //Should Throw Error
+        } finally {
+                                    //Should Not Throw Error
+        }
+
+        try{
+                                    //Should Not Throw Error
+        } catch(Exception e) {
+                                    //Should Throw Error
+        } finally {
+            System.out.println("We are in Finally block.");
+        }
     }
 
-    public static void FinallyTest()
+    public static void CatchTest()
     {
         try{
             int A[] = new int[3];
             int B = A[5];
         } catch( Exception e) {
-            //System.out.println("");
-            //System.out.println("Indexing Error");
+                                    //Should Throw An Error
         } finally {
-           // try {
-              //  throw new Exception();  //Should Throw an Error
-            //} catch (Exception e) {
-                 //e.printStackTrace();
-            //}
+            System.out.println("We are in the Finally.");
         }
+
+
         return;
     }
 }

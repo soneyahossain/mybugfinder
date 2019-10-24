@@ -5,6 +5,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.UnaryExpr;
@@ -30,8 +31,7 @@ public class mytool {
 
     public static void main(String args[]) {
 
-        final File folder = new File("src");
-
+        final File folder = new File("test");
         List<String> result = new ArrayList<>();
         search(".*\\.java", folder, result);
         findPatterns(result);
@@ -40,6 +40,7 @@ public class mytool {
 
 
     public static void search(final String pattern, final File folder, List<String> result) {
+
         for (final File f : folder.listFiles()) {
 
             if (f.isDirectory()) {
@@ -49,6 +50,7 @@ public class mytool {
             if (f.isFile()) {
                 if (f.getName().matches(pattern)) {
                     result.add(f.getAbsolutePath());
+                    //System.out.println(f.getAbsolutePath());
                 }
             }
 
@@ -70,7 +72,7 @@ public class mytool {
 
 
                 YamlPrinter printer = new YamlPrinter(true);
-                //System.out.println(printer.output(cu));
+               // System.out.println(printer.output(cu));
                 NodeList<TypeDeclaration<?>> types = cu.getTypes();
 
                 for (TypeDeclaration type : types) {
@@ -112,8 +114,43 @@ public class mytool {
                 try {
                     new VoidVisitorAdapter<Object>() {
 
+
+                        @Override
+
+                        public void visit(final AssignExpr n, final Object arg) {
+
+                            if(identifiers.get(n.getTarget().toString())!=null)
+                            {
+
+                                //System.out.println("here....."+n.getTarget().toString());
+                                //System.out.println("here....."+identifiers.get(n.getTarget().toString()));
+                                //System.out.println("here....."+n.getValue());
+
+                                if(n.getValue().toString().contains("new "))
+                                {
+                                    System.out.println("here....."+n.getValue());
+                                    String type=identifiers.get(n.getTarget().toString())+"Object";
+                                    identifiers.put(n.getTarget().toString(), type);
+
+                                }
+                                //identifiers.put(n.getTarget().toString(), identifiers.get(n.getTarget().toString() + "Object"));
+
+                            }
+
+                            n.getTarget().accept(this, arg);
+                            n.getValue().accept(this, arg);
+                            n.getComment().ifPresent((l) -> {
+                                l.accept(this, arg);
+                            });
+                        }
+
+
                         @Override
                         public void visit(final VariableDeclarator n, final Object arg) {
+
+                            identifiers.put(n.getNameAsString(), n.getType().toString());
+
+
 
                             n.getInitializer().ifPresent((l) -> {
                                 if (l.toString().contains("new "))
@@ -122,6 +159,11 @@ public class mytool {
                                     identifiers.put(n.getNameAsString(), n.getType().toString());
                                 l.accept(this, arg);
                             });
+
+
+
+
+
                             n.getName().accept(this, arg);
                             n.getType().accept(this, arg);
                             n.getComment().ifPresent((l) -> {
@@ -223,7 +265,7 @@ public class mytool {
                                     System.out.print("Error found at File: " + f.getName());
                                     System.out.print(", position: " + rs.getBegin().get().toString());
                                     //System.out.print(", statement: " + rs.toString());
-                                    System.out.println(", Desc: This statement has a return such as return x++;. A postfix increment/decrement does not impact the value of the expression, so this increment/decrement has no effect. Please verify that this statement does the right thing\n");
+                                    System.out.println(", Desc: Avoid postfix increment/decrement  in return statement\n");
                                 }
                                 l.accept(this, arg);
                             });
