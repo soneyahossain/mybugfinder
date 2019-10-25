@@ -15,8 +15,6 @@ public class testpattern3_3
         System.out.println(incrementBefore(startIndex));
         System.out.println(decrementAfter(startIndex));
         System.out.println(decrementBefore(startIndex));
-
-
     }
 
     public static int incrementAfter(int i){
