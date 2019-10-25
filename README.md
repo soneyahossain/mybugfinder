@@ -20,9 +20,13 @@ String regluarTwo = "CATS";
 
 
 if (objectOne == objectTwo)                                                            //invalid comparison
+
 if (objectOne.equals(objectTwo))                                                       //valid comparison
+
 if (objectOne == regularOne)                                                           //invalid comparison
+
 if (objectOne == regluarTwo)                                                           //invalid comparison
+
 if (regularOne == regluarTwo)                                                          //valid comparison
 
 For pattern 2:
@@ -31,9 +35,11 @@ catch( Exception e) {
             System.out.println("Indexing Error: "+e.toString());
         }                                                           //okay
 
+
 catch( Exception e) {
            // System.out.println("Indexing Error: "+e.toString());
         }                                                           //avoid empty catch statement
+
 
 catch( Exception e) {
 
@@ -44,8 +50,11 @@ For pattern 3:
 ------------------------------------------------------------------------------------------------------------------------
 int i=0;
 return i--;                                                                     //Should Throw Error
+
 return i++;                                                                     //Should Throw Error
+
 return ++i;                                                                     //Should Not Throw An Error
+
 return ++i;                                                                     //Should Not Throw An Error
 
 
