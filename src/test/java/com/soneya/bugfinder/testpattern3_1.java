@@ -1,4 +1,4 @@
-//Tests That A Useless Increment is Not in the Return Statement
+package com.soneya.bugfinder;//Tests That A Useless Increment is Not in the Return Statement
 //These Tests Should Throw Errors
 
 public class testpattern3_1 {

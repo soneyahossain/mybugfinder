@@ -1,4 +1,4 @@
-//Tests That Exceptions Are Not Thrown in Finally
+package com.soneya.bugfinder;//Tests That Exceptions Are Not Thrown in Finally
 //These Tests Should Not Throw Errors
 
 public class testpattern2_2 {

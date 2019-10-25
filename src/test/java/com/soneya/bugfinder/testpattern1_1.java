@@ -1,4 +1,4 @@
-//All of These Tests Compare Strings with == and !=
+package com.soneya.bugfinder;//All of These Tests Compare Strings with == and !=
 
 public class testpattern1_1 {
 
@@ -203,7 +203,7 @@ public class testpattern1_1 {
             flag = false;
         }
 
-        if (regularOne != regluarTwo && one == two) //Should not Give Error
+        if (regularOne != regluarTwo && one == two) //Should Not Give Error
         {
             flag = true;
         }
@@ -238,9 +238,6 @@ public class testpattern1_1 {
             flag = false;
         }
 
-
-        //Cases that Our Tool Can't Handle Due To Limitations
-
         String splitRegular;
         splitRegular = "Rat";
         String splitObject;
@@ -266,6 +263,16 @@ public class testpattern1_1 {
         LaterObject = new String("Cow");
         if (LaterObject == "Mouse") {     //Should Give Error
             flag = false;
+        }
+
+        String nullStringRegular = null;
+
+        if (nullStringRegular == objectOne) {     //Should Give Error
+            flag = false;
+        }
+
+        if (nullStringRegular == regularOne) {     //Should Not Give Error
+            flag = true;
         }
     }
 }

@@ -1,4 +1,4 @@
-//All of These Tests Compare Strings with .Equals
+package com.soneya.bugfinder;//All of These Tests Compare Strings with .Equals
 //None of These Test Should Give Errors
 
 public class testpattern1_2 {

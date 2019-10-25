@@ -1,3 +1,5 @@
+package com.soneya.bugfinder;
+
 public class testpattern2_1 {
 
     public static void main(String args[]) {
@@ -8,7 +10,7 @@ public class testpattern2_1 {
             int A[] = new int[3];
             int B = A[5];
         } catch( Exception e) {
-            //Should Throw an Error
+                                    //Should Throw an Error
         } finally {
             System.out.println("We are in the finally.");
         }

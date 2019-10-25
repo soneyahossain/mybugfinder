@@ -1,4 +1,4 @@
-//Throwing Errors Inside Finally within real functions
+package com.soneya.bugfinder;//Throwing Errors Inside Finally within real functions
 import java.util.Scanner;
 
 public class testpattern2_3

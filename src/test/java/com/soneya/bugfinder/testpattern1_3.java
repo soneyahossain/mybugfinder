@@ -1,4 +1,4 @@
-//Comparing Strings inside Functions
+package com.soneya.bugfinder;//Comparing Strings inside Functions
 
 import java.util.Scanner;
 
