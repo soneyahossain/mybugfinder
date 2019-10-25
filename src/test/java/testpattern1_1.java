@@ -203,7 +203,7 @@ public class testpattern1_1 {
             flag = false;
         }
 
-        if (regularOne != regluarTwo && one == two) //Should Give Error
+        if (regularOne != regluarTwo && one == two) //Should not Give Error
         {
             flag = true;
         }
