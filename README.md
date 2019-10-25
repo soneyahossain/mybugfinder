@@ -1,4 +1,4 @@
-# bugfinderTool
+# mybugfinder
 
 This bug finder tool can find three java patterns.
 
@@ -60,13 +60,19 @@ return ++i;                                                                     
 
 
 
-How To Run Tool and Test Your Own Code
--------------------------------------
+How To Run Tool from Intellij IDEA and Test Your Own Code
+----------------------------------------------------------
 
 1. Clone this git repository.
 2. Place your src files inside FileToTest directory.
 3. Run myTool.java class
 4. You should be able to see the possible errors and recommendations in the output console.
+
+How To Run Tool from Intellij IDEA and Test Your Own Code
+----------------------------------------------------------
+
+1. Download the Files from the Github.
+2. Open Zip File.
 
 A sample output after running joda-time src files tested by our tools:
 
