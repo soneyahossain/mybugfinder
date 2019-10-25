@@ -68,6 +68,23 @@ How To Run Tool and Test Your Own Code
 3. Run myTool.java class
 4. You should be able to see the possible errors and recommendations in the output console.
 
+A sample output after running joda-time src files tested by our tools:
+
+
+Error found at File: /bugfinder/joda-time/joda/main/java/org/joda/time/format/InternalPrinterDateTimePrinter.java, position: (line 62,col 11), desc: Avoid empty catch block
+
+Error found at File: /bugfinder/joda-time/joda/main/java/org/joda/time/format/InternalPrinterDateTimePrinter.java, position: (line 80,col 11), desc: Avoid empty catch block
+
+Error found at File: /bugfinder/joda-time/joda/main/java/org/joda/time/format/ISODateTimeFormat.java, position: (line 197,col 11), desc: Avoid empty catch block
+
+Error found at File: /bugfinder/joda-time/joda/main/java/org/joda/time/tz/ZoneInfoProvider.java, position: (line 253,col 15), desc: Avoid empty catch block
+
+Error found at File: /bugfinder/joda-time/joda/main/java/org/joda/time/tz/ZoneInfoProvider.java, position: (line 273,col 15), desc: Avoid empty catch block
+
+
+
+
+
 That's it.
 
 

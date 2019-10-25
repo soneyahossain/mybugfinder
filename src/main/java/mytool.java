@@ -11,12 +11,20 @@ public class mytool {
 
     public static void main(String args[]) {
 
-        final File folder = new File("src/test");
+        long starttime=System.currentTimeMillis();
+
+        final File folder = new File("joda-time");
         List<String> result = new ArrayList<>();
         search(".*\\.java", folder, result);
         myBugFinderTool mytool= new myBugFinderTool();
         mytool.findPatterns(result);
+
+        long endtime=System.currentTimeMillis();
         //System.out.println(mytool.identifiers.toString());
+        System.out.println("total runtime===="+(endtime - starttime)/1000);
+
+
+
     }
 
     public static void search(final String pattern, final File folder, List<String> result) {
