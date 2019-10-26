@@ -72,14 +72,14 @@ How To Run Tool from Intellij IDEA and Test Your Own Code
 How To Run Tool from Terminal and Test Your Own Code
 ----------------------------------------------------------
 
-2. Download or Clone the Files from the Github.
+1. Download or Clone the Files from the Github.
 2. Make Sure You Have Maven Installed in your System.
 3. Navigate Using Terminal to mybugfinder-master Folder.
 4. Place your Source Files Inside FileToTest Folder.
-4. Open the mytool.java File and Change File Path in mytool.java to "FileToTest".
-5. Navigate to Folder with pom.xml.
-6. Run "mvn package".
-7. Run "mvn exec:java -Dexec.mainClass=com.soneya.bugfinder.mytool"
+5. Open the mytool.java File and Change File Path in mytool.java to "FileToTest".
+6. Navigate to Folder with pom.xml.
+7. Run "mvn package".
+8. Run "mvn exec:java -Dexec.mainClass=com.soneya.bugfinder.mytool"
 
 A sample output after running joda-time src files tested by our tools:
 
