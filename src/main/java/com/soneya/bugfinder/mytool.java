@@ -14,7 +14,7 @@ public class mytool {
 
         long starttime=System.currentTimeMillis();
 
-        final File folder = new File("joda-time");
+        final File folder = new File("src/test");
         List<String> result = new ArrayList<>();
         search(".*\\.java", folder, result);
         myBugFinderTool mytool= new myBugFinderTool();
