@@ -12,10 +12,10 @@ We used existing java parser version 3.15.1 to develop this bug finder tool. We 
 For pattern 1:
 ------------------------------------------------------------------------------------------------------------------------
 
-String objectOne = new String("CATS");
-String objectTwo = new String("CATS");
-String regularOne = "CATS";
-String regluarTwo = "CATS";
+String objectOne = new String("CATS"); \n
+String objectTwo = new String("CATS"); \n
+String regularOne = "CATS"; \n
+String regluarTwo = "CATS";\n
 
 
 
@@ -71,8 +71,13 @@ How To Run Tool from Intellij IDEA and Test Your Own Code
 How To Run Tool from Intellij IDEA and Test Your Own Code
 ----------------------------------------------------------
 
-1. Download the Files from the Github.
-2. Open Zip File.
+1. Make Sure You Can Compile and Run Maven Projects.
+2. Download the Files from the Github.
+3. Open Zip File and Navigate Using Terminal to mybugfinder-master Folder.
+4. Open the mytool.java File and Replace Path to Folder Containing Source Code to Test with Path to Code You Want to Test.
+5. Navigate to Folder with pom.xml.
+6. Run "mvn package".
+7. Run "mvn exec:java -Dexec.mainClass=com.soneya.bugfinder.mytool"
 
 A sample output after running joda-time src files tested by our tools:
 
